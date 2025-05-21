@@ -26,7 +26,13 @@ if (typeof document !== 'undefined') {
   document.head.appendChild(styleElement);
 }
 
-function createSettingsDialog(title, qrCodeUrl, onCheckboxClick) {
+function createSettingsDialog({
+  title,
+  qrCodeUrl,
+  onCheckboxClick,
+  onShow,
+  onHide,
+}) {
   var overlaySetting;
   var messageBox;
   var closeButton;
@@ -35,8 +41,6 @@ function createSettingsDialog(title, qrCodeUrl, onCheckboxClick) {
   var setting_msg_on = false;
   var currentButton;
   var isChecked;
-
-  document.addEventListener("keydown", handleKeyDown);
 
   function handleKeyDown(e) {
     if (setting_msg_on) {
@@ -72,8 +76,9 @@ function createSettingsDialog(title, qrCodeUrl, onCheckboxClick) {
     overlaySetting.addEventListener("click", function (event) {
       event.stopPropagation(); // Stop the click event from propagating
     });
-    document.body.focus();
-    iframe.blur();
+    document.addEventListener("keydown", handleKeyDown);
+    if (onShow)
+      onShow();
   }
 
   function hideSettings() {
@@ -81,8 +86,9 @@ function createSettingsDialog(title, qrCodeUrl, onCheckboxClick) {
     messageBox.style.display = "none";
     stopFlash(currentButton);
     setting_msg_on = false;
-    iframe.focus();
-    document.body.blur();
+    document.removeEventListener("keydown", handleKeyDown);
+    if (onHide)
+      onHide();
   }
 
   function handleCheckBox() {
