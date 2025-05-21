@@ -91,7 +91,7 @@ Open a terminal and run:
 npm install
 ```
 
-3. **Start a development server**
+3. **Start a bundle watcher**
 
 In the same terminal, run:
 
