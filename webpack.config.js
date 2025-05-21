@@ -14,6 +14,7 @@ module.exports = {
         },
 
     },
+    devtool: 'source-map',
     resolve: {
         fullySpecified: false // Fixes issues with some old module formats
     },

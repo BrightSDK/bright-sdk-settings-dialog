@@ -42,30 +42,34 @@
 </head>
 <body>
     <h1>Settings Dialog Development Environment</h1>
-    
+
     <div id="controls">
         <div>
             <button id="showDialog">Show Dialog</button>
             <button id="hideDialog">Hide Dialog</button>
         </div>
-        
+
         <div class="checkbox-control">
+            <label>
+                <input type="checkbox" id="autoclose">
+                Close on checkbox click
+            </label>
             <label>
                 <input type="checkbox" id="indexingEnabled" checked>
                 Initial Web Indexing State
             </label>
         </div>
-        
+
         <div class="status">
             <p>Dialog Status: <span id="dialogStatus">Hidden</span></p>
             <p>Web Indexing Status: <span id="indexingStatus">Enabled</span></p>
             <p>Last Event: <span id="lastEvent">None</span></p>
         </div>
     </div>
-    
+
     <!-- Load your bundled module -->
     <script src="../dist/settingsdialog.bundle.js"></script>
-    
+
     <script>
         // Wait for everything to load
         document.addEventListener('DOMContentLoaded', function() {
@@ -73,16 +77,40 @@
             const showButton = document.getElementById('showDialog');
             const hideButton = document.getElementById('hideDialog');
             const indexingCheckbox = document.getElementById('indexingEnabled');
+            const autoCloseCheckbox = document.getElementById('autoclose');
             const dialogStatus = document.getElementById('dialogStatus');
             const indexingStatus = document.getElementById('indexingStatus');
             const lastEvent = document.getElementById('lastEvent');
-            
+
+            // Parse URL parameters to set initial checkbox states
+            function getURLParams() {
+                const params = new URLSearchParams(window.location.search);
+
+                // Check for indexing parameter
+                if (params.has('indexing')) {
+                    const indexingValue = params.get('indexing');
+                    indexingCheckbox.checked = indexingValue === 'true' || indexingValue === '1';
+                    indexingStatus.textContent = indexingCheckbox.checked ? 'Enabled' : 'Disabled';
+                }
+
+                // Check for autoclose parameter
+                if (params.has('autoclose')) {
+                    const autocloseValue = params.get('autoclose');
+                    autoCloseCheckbox.checked = autocloseValue === 'true' || autocloseValue === '1';
+                }
+
+                console.log('URL params loaded - indexing:', indexingCheckbox.checked, 'autoclose:', autoCloseCheckbox.checked);
+            }
+
+            // Call this function to initialize checkbox states from URL
+            getURLParams();
+
             // Keep track of dialog instance
             let dialog = null;
-            
+
             // Create QR code URL (placeholder)
             const qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://privacy.brightdata.com';
-            
+
             // Function to initialize or reinitialize dialog
             function initDialog() {
                 // Create dialog if not already created
@@ -90,6 +118,7 @@
                     dialog = window.SettingsDialog.create({
                         title: 'Settings',
                         qrCodeUrl: qrCodeUrl,
+                        autoclose: autoCloseCheckbox.checked,
                         onCheckboxClick: function(isEnabled) {
                             // Update UI to reflect new state
                             indexingCheckbox.checked = isEnabled;
@@ -107,29 +136,45 @@
                     });
                 }
             }
-            
+
+            function updateURL() {
+                const url = new URL(window.location);
+                url.searchParams.set('indexing', indexingCheckbox.checked);
+                url.searchParams.set('autoclose', autoCloseCheckbox.checked);
+                window.history.replaceState({}, '', url);
+            }
+
             // Initialize dialog on page load
             initDialog();
-            
+
             // Show dialog button
             showButton.addEventListener('click', function() {
                 initDialog(); // Ensure dialog is initialized
                 dialog.show(indexingCheckbox.checked);
             });
-            
+
             // Hide dialog button
             hideButton.addEventListener('click', function() {
                 if (dialog) {
                     dialog.hide();
                 }
             });
-            
+
             // Update UI when checkbox changes
             indexingCheckbox.addEventListener('change', function() {
                 indexingStatus.textContent = this.checked ? 'Enabled' : 'Disabled';
                 lastEvent.textContent = 'Initial state changed: ' + (this.checked ? 'Enabled' : 'Disabled');
+                updateURL();
             });
-            
+
+            autoCloseCheckbox.addEventListener('change', function() {
+                if (dialog) {
+                    dialog.setAutoClose(this.checked);
+                }
+                updateURL();
+            });
+
+            dialog.show();
             console.log('Development environment loaded!');
         });
     </script>

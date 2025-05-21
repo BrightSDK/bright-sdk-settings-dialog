@@ -29,6 +29,7 @@ if (typeof document !== 'undefined') {
 function createSettingsDialog({
   title,
   qrCodeUrl,
+  autoclose = true,
   onCheckboxClick,
   onShow,
   onHide,
@@ -41,18 +42,30 @@ function createSettingsDialog({
   var setting_msg_on = false;
   var currentButton;
   var isChecked;
+  var autoClose = autoclose;
+
+  function setAutoClose(value) {
+    autoClose = value;
+  }
+
+  function resetCurrent() {
+    stopFlash(currentButton);
+    currentButton = null;
+  }
+
+  function setCurrent(button) {
+    resetCurrent();
+    currentButton = button;
+    startFlash(currentButton);
+  }
 
   function handleKeyDown(e) {
     if (setting_msg_on) {
       const key = KeyCodeParser.parseEvent(e);
       if (key.UP) {
-        stopFlash(currentButton);
-        currentButton = "closeSettingsButton";
-        startFlash(currentButton);
+        setCurrent("closeSettingsButton");
       } else if (key.DOWN) {
-        stopFlash(currentButton);
-        currentButton = "checkbox";
-        startFlash(currentButton);
+        setCurrent("checkbox");
       } else if (key.ENTER) {
         if (currentButton == "closeSettingsButton") {
           hideSettings();
@@ -71,8 +84,7 @@ function createSettingsDialog({
     messageBox.style.display = "block";
     isChecked = value;
     renderCheckBox();
-    currentButton = "closeSettingsButton";
-    startFlash(currentButton);
+    setCurrent(value ? "closeSettingsButton" : "checkbox");
     overlaySetting.addEventListener("click", function (event) {
       event.stopPropagation(); // Stop the click event from propagating
     });
@@ -84,7 +96,7 @@ function createSettingsDialog({
   function hideSettings() {
     overlaySetting.style.display = "none";
     messageBox.style.display = "none";
-    stopFlash(currentButton);
+    resetCurrent();
     setting_msg_on = false;
     document.removeEventListener("keydown", handleKeyDown);
     if (onHide)
@@ -92,8 +104,12 @@ function createSettingsDialog({
   }
 
   function handleCheckBox() {
-    hideSettings();
-    onCheckboxClick(!isChecked);
+    isChecked = !isChecked;
+    if (autoClose)
+      hideSettings();
+    else
+      renderCheckBox();
+    onCheckboxClick(isChecked);
   }
 
   function renderCheckBox() {
@@ -142,7 +158,7 @@ function createSettingsDialog({
     // Create the close button
     closeButton = document.createElement("button");
     closeButton.id = "closeSettingsButton";
-    closeButton.innerHTML = "X";
+    closeButton.innerHTML = "&#10005;"; // Unicode for ✕ (multiplication X)
     closeButton.style.position = "absolute";
     closeButton.style.top = "10px";
     closeButton.style.left = "10px";
@@ -150,8 +166,12 @@ function createSettingsDialog({
     closeButton.style.color = "white";
     closeButton.style.border = "none";
     closeButton.style.borderRadius = "50%";
-    closeButton.style.width = "30px";
-    closeButton.style.height = "30px";
+    closeButton.style.width = "45px";
+    closeButton.style.height = "45px";
+    closeButton.style.fontSize = "24pt";
+    closeButton.style.lineHeight = "40px";
+    closeButton.style.textAlign = "center";
+    closeButton.style.padding = "0";
     closeButton.style.cursor = "pointer";
     closeButton.onclick = function () {
       hideSettings();
@@ -175,14 +195,14 @@ function createSettingsDialog({
     // Create the text label
     var webIndexingLabel = document.createElement("span");
     webIndexingLabel.textContent = "Web Indexing";
-    webIndexingLabel.style.fontSize = "20px";
+    webIndexingLabel.style.fontSize = "25px";
     webIndexingLabel.style.marginRight = "20px"; // Add space between label and checkbox
     webIndexingLabel.style.color = " #7ef542";
     // Create the custom checkbox
     checkbox = document.createElement("div");
     checkbox.id = "checkbox";
-    checkbox.style.width = "30px";
-    checkbox.style.height = "30px";
+    checkbox.style.width = "50px";
+    checkbox.style.height = "50px";
     checkbox.style.borderRadius = "50%";
     checkbox.style.display = "flex";
     checkbox.style.alignItems = "center";
@@ -190,7 +210,7 @@ function createSettingsDialog({
     checkbox.style.cursor = "pointer";
     checkbox.style.backgroundColor = " #7ef542"; // Start as "on"
     checkbox.innerHTML = "&#x2713;"; // Unicode for ✓ (checkmark)
-    checkbox.style.fontSize = "20px"; // Ensure the symbol is visible
+    checkbox.style.fontSize = "30px"; // Ensure the symbol is visible
     checkbox.style.color = "white";
 
     // Create a text line below the checkbox that changes based on checkbox state
@@ -264,6 +284,7 @@ function createSettingsDialog({
   return {
     show: showSettings,
     hide: hideSettings,
+    setAutoClose: setAutoClose,
   };
 }
 

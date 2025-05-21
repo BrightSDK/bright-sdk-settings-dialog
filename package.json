@@ -18,7 +18,7 @@
   "scripts": {
     "build": "npx webpack --mode production",
     "build-debug": "npx webpack --mode development",
-    "dev": "webpack --watch",
+    "dev": "npm run build-debug -- --watch",
     "serve": "./node_modules/nodemon/bin/nodemon.js --watch dist server.js"
   }
 }
