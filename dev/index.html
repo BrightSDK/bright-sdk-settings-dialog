@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Dialog Development</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
+        #controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #444;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .checkbox-control {
+            margin-top: 10px;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Settings Dialog Development Environment</h1>
+    
+    <div id="controls">
+        <div>
+            <button id="showDialog">Show Dialog</button>
+            <button id="hideDialog">Hide Dialog</button>
+        </div>
+        
+        <div class="checkbox-control">
+            <label>
+                <input type="checkbox" id="indexingEnabled" checked>
+                Initial Web Indexing State
+            </label>
+        </div>
+        
+        <div class="status">
+            <p>Dialog Status: <span id="dialogStatus">Hidden</span></p>
+            <p>Web Indexing Status: <span id="indexingStatus">Enabled</span></p>
+            <p>Last Event: <span id="lastEvent">None</span></p>
+        </div>
+    </div>
+    
+    <!-- Load your bundled module -->
+    <script src="../dist/settingsdialog.bundle.js"></script>
+    
+    <script>
+        // Wait for everything to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // References to DOM elements
+            const showButton = document.getElementById('showDialog');
+            const hideButton = document.getElementById('hideDialog');
+            const indexingCheckbox = document.getElementById('indexingEnabled');
+            const dialogStatus = document.getElementById('dialogStatus');
+            const indexingStatus = document.getElementById('indexingStatus');
+            const lastEvent = document.getElementById('lastEvent');
+            
+            // Keep track of dialog instance
+            let dialog = null;
+            
+            // Create QR code URL (placeholder)
+            const qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://privacy.brightdata.com';
+            
+            // Function to initialize or reinitialize dialog
+            function initDialog() {
+                // Create dialog if not already created
+                if (!dialog) {
+                    dialog = window.SettingsDialog.create({
+                        title: 'Bright Data',
+                        qrCodeUrl: qrCodeUrl,
+                        onCheckboxClick: function(isEnabled) {
+                            // Update UI to reflect new state
+                            indexingCheckbox.checked = isEnabled;
+                            indexingStatus.textContent = isEnabled ? 'Enabled' : 'Disabled';
+                            lastEvent.textContent = 'Checkbox clicked: ' + (isEnabled ? 'Enabled' : 'Disabled');
+                        },
+                        onShow: function() {
+                            dialogStatus.textContent = 'Visible';
+                            lastEvent.textContent = 'Dialog shown';
+                        },
+                        onHide: function() {
+                            dialogStatus.textContent = 'Hidden';
+                            lastEvent.textContent = 'Dialog hidden';
+                        }
+                    });
+                }
+            }
+            
+            // Initialize dialog on page load
+            initDialog();
+            
+            // Show dialog button
+            showButton.addEventListener('click', function() {
+                initDialog(); // Ensure dialog is initialized
+                dialog.show(indexingCheckbox.checked);
+            });
+            
+            // Hide dialog button
+            hideButton.addEventListener('click', function() {
+                if (dialog) {
+                    dialog.hide();
+                }
+            });
+            
+            // Update UI when checkbox changes
+            indexingCheckbox.addEventListener('change', function() {
+                indexingStatus.textContent = this.checked ? 'Enabled' : 'Disabled';
+                lastEvent.textContent = 'Initial state changed: ' + (this.checked ? 'Enabled' : 'Disabled');
+            });
+            
+            console.log('Development environment loaded!');
+        });
+    </script>
+</body>
+</html>
