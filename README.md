@@ -72,6 +72,53 @@ dialog.hide();
 ### Project Structure
 
 - `src/settingsdialog.js`: Main module
+- `example/index.html`: Sample HTML file for testing the dialog
+
+### Run Locally
+
+1. **Clone the repository** (if you haven't already)
+
+```bash
+git clone https://github.com/vladislavs.luminati/bright-sdk-settings-dialog.git
+cd bright-sdk-settings-dialog
+```
+
+2. **Install dependencies**
+
+Open a terminal and run:
+
+```bash
+npm install
+```
+
+3. **Start a development server**
+
+In the same terminal, run:
+
+```bash
+npm run dev
+```
+
+4. **Open the example**
+
+Open another terminal and run:
+
+```bash
+npm run serve
+```
+
+Then open [http://localhost:3000](http://localhost:3000) in your browser to view the sample dialog in action.
+
+5. **Build the project**
+
+To generate the production-ready bundle:
+
+```bash
+npm run build
+```
+## Project Structure
+
+- `src/settingsdialog.js`: Main module
 - `example/index.html`: Standalone test page
 - `dist/`: Webpack-bundled output
 
