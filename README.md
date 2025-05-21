@@ -79,7 +79,7 @@ dialog.hide();
 1. **Clone the repository** (if you haven't already)
 
 ```bash
-git clone https://github.com/vladislavs.luminati/bright-sdk-settings-dialog.git
+git clone git@github.com:vladislavs-luminati/bright-sdk-settings-dialog.git
 cd bright-sdk-settings-dialog
 ```
 
