@@ -1,6 +1,6 @@
 import KeyCodeParser from "bright-sdk-keycode-parser";
 
-function createSettingsDialog(title, onCheckboxClick) {
+function createSettingsDialog(title, qrCodeUrl, onCheckboxClick) {
   var overlaySetting;
   var messageBox;
   var closeButton;
@@ -186,7 +186,7 @@ function createSettingsDialog(title, onCheckboxClick) {
     qrCodeLabel.style.color = "#cccccc";
 
     var qrCodeImage = document.createElement("img");
-    qrCodeImage.src = "./qr_brd.png";
+    qrCodeImage.src = qrCodeUrl;
 
     qrCodeImage.alt = "QR Code";
     qrCodeImage.style.display = "block";
