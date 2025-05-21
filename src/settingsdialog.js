@@ -1,5 +1,31 @@
 import KeyCodeParser from "bright-sdk-keycode-parser";
 
+const styleElement = document.createElement('style');
+styleElement.textContent = `
+  @import url("https://fonts.cdnfonts.com/css/games");
+
+  @keyframes flash {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .flash {
+    animation: flash 1.2s infinite;
+  }
+`;
+
+// Append style element when the module is loaded
+if (typeof document !== 'undefined') {
+  document.head.appendChild(styleElement);
+}
+
 function createSettingsDialog(title, qrCodeUrl, onCheckboxClick) {
   var overlaySetting;
   var messageBox;
