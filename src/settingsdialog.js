@@ -1,6 +1,6 @@
 import KeyCodeParser from "bright-sdk-keycode-parser";
 
-const styleElement = document.createElement('style');
+const styleElement = document.createElement("style");
 styleElement.textContent = `
   @import url("https://fonts.cdnfonts.com/css/games");
 
@@ -22,13 +22,17 @@ styleElement.textContent = `
 `;
 
 // Append style element when the module is loaded
-if (typeof document !== 'undefined') {
+if (typeof document !== "undefined") {
   document.head.appendChild(styleElement);
 }
 
 function createSettingsDialog({
   title,
   qrCodeUrl,
+  logoUrl,
+  msgBoxUrl,
+  offUrl,
+  onUrl,
   autoclose = true,
   onCheckboxClick,
   onShow,
@@ -89,8 +93,7 @@ function createSettingsDialog({
       event.stopPropagation(); // Stop the click event from propagating
     });
     document.addEventListener("keydown", handleKeyDown);
-    if (onShow)
-      onShow();
+    if (onShow) onShow();
   }
 
   function hideSettings() {
@@ -99,27 +102,22 @@ function createSettingsDialog({
     resetCurrent();
     setting_msg_on = false;
     document.removeEventListener("keydown", handleKeyDown);
-    if (onHide)
-      onHide();
+    if (onHide) onHide();
   }
 
   function handleCheckBox() {
     isChecked = !isChecked;
-    if (autoClose)
-      hideSettings();
-    else
-      renderCheckBox();
+    if (autoClose) hideSettings();
+    else renderCheckBox();
     onCheckboxClick(isChecked);
   }
 
   function renderCheckBox() {
     if (isChecked) {
-      checkbox.style.backgroundColor = "#7ef542";
-      checkbox.innerHTML = "&#x2713;"; // Unicode for ✓
+      checkbox.style.backgroundImage = `url(${onUrl})`;
       checkboxText.textContent = "When enabled you keep the app free";
     } else {
-      checkbox.style.backgroundColor = "#ff5e5e";
-      checkbox.innerHTML = "&#x2717;"; // Unicode for ✗
+      checkbox.style.backgroundImage = `url(${offUrl})`;
       checkboxText.textContent = "Enable to keep the app free";
     }
   }
@@ -140,20 +138,17 @@ function createSettingsDialog({
 
     // Create a div for the message box
     messageBox = document.createElement("div");
-    messageBox.style.width = "30%";
-    messageBox.style.height = "43%";
+    messageBox.style.width = "28vw";
+    messageBox.style.height = "55vh";
     messageBox.style.position = "fixed";
     messageBox.style.top = "50%";
     messageBox.style.left = "50%";
     messageBox.style.transform = "translate(-50%, -50%)";
-    messageBox.style.background = " #1e1e2f";
+    messageBox.style.backgroundImage = `url(${msgBoxUrl})`;
+    messageBox.style.backgroundSize = "contain"; // or "contain" if needed
+    messageBox.style.backgroundRepeat = "no-repeat";
+    messageBox.style.backgroundPosition = "center";
     messageBox.style.backgroundRepeat = "no-repeat"; // Prevents repeating of the image
-    messageBox.style.backgroundPosition = "center"; // Centers the image in the box
-    messageBox.style.border = "10px solid#3b3b3b";
-    messageBox.style.borderRadius = "30px";
-    messageBox.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
-    messageBox.style.padding = "20px";
-    messageBox.style.zIndex = "1000";
     messageBox.style.fontFamily = "'Molisa Delawere', sans-serif"; // Set font family for message box
     messageBox.style.zIndex = "1000"; // On top of the overlaySetting
 
@@ -162,65 +157,68 @@ function createSettingsDialog({
     closeButton.id = "closeSettingsButton";
     closeButton.innerHTML = "&#10005;"; // Unicode for ✕ (multiplication X)
     closeButton.style.position = "absolute";
-    closeButton.style.top = "10px";
-    closeButton.style.left = "10px";
-    closeButton.style.backgroundColor = " #ff4d4d";
+    closeButton.style.top = "4vh";
+    closeButton.style.left = "0.6vh";
+    closeButton.style.backgroundColor = "rgb(255, 255, 255)";
     closeButton.style.color = "white";
     closeButton.style.border = "none";
     closeButton.style.borderRadius = "50%";
-    closeButton.style.width = "45px";
-    closeButton.style.height = "45px";
-    closeButton.style.fontSize = "24pt";
+    closeButton.style.width = "3vw";
+    closeButton.style.height = "3vw";
+    closeButton.style.fontSize = "2vw";
     closeButton.style.lineHeight = "40px";
+    closeButton.style.display = "flex";
     closeButton.style.textAlign = "center";
+    closeButton.style.alignItems = "center";
+    closeButton.style.justifyContent = "center";
+    closeButton.style.color = "black";
     closeButton.style.padding = "0";
     closeButton.style.cursor = "pointer";
     closeButton.onclick = function () {
       hideSettings();
     };
 
-    // Create the title showing the vendor name
-    var vendorTitle = document.createElement("h1");
-    vendorTitle.textContent = vendor;
-    vendorTitle.style.textAlign = "center";
-    vendorTitle.style.color = " #00f7ff";
-    vendorTitle.style.fontSize = "50px";
-    vendorTitle.style.fontFamily = "'Molisa Delawere', sans-serif";
+    var logoImg = document.createElement("img");
+    logoImg.src = logoUrl;
+    logoImg.alt = "App Logo";
+    logoImg.style.display = "block";
+    logoImg.style.margin = "0 auto"; // centers the image
+    logoImg.style.width = "auto"; // adjust size as needed
+    logoImg.style.height = "15vh"; // preserve aspect ratio
+    logoImg.style.marginTop = "10vh"; // preserve aspect ratio
 
     // Create the Web Indexing row with a round checkbox
     var webIndexingRow = document.createElement("div");
     webIndexingRow.style.display = "flex";
     webIndexingRow.style.alignItems = "center";
     webIndexingRow.style.justifyContent = "center"; // Centering the elements horizontally
-    webIndexingRow.style.marginTop = "20px";
+    webIndexingRow.style.marginTop = "1.5vh";
 
     // Create the text label
     var webIndexingLabel = document.createElement("span");
     webIndexingLabel.textContent = "Web Indexing";
-    webIndexingLabel.style.fontSize = "25px";
-    webIndexingLabel.style.marginRight = "20px"; // Add space between label and checkbox
+    webIndexingLabel.style.fontSize = "3.5vh";
+    webIndexingLabel.style.marginRight = "1.5vh"; // Add space between label and checkbox
     webIndexingLabel.style.color = " #7ef542";
+    webIndexingLabel.style.fontWeight = "bold";
+
     // Create the custom checkbox
     checkbox = document.createElement("div");
     checkbox.id = "checkbox";
-    checkbox.style.width = "50px";
-    checkbox.style.height = "50px";
-    checkbox.style.borderRadius = "50%";
-    checkbox.style.display = "flex";
-    checkbox.style.alignItems = "center";
-    checkbox.style.justifyContent = "center";
-    checkbox.style.cursor = "pointer";
-    checkbox.style.backgroundColor = " #7ef542"; // Start as "on"
-    checkbox.innerHTML = "&#x2713;"; // Unicode for ✓ (checkmark)
-    checkbox.style.fontSize = "30px"; // Ensure the symbol is visible
-    checkbox.style.color = "white";
+    checkbox.style.width = "4vh";
+    checkbox.style.height = "4vh";
+    checkbox.style.backgroundImage = `url(${onUrl})`;
+    checkbox.style.backgroundSize = "contain"; // or "contain" if needed
+    checkbox.style.backgroundRepeat = "no-repeat";
+    checkbox.style.backgroundPosition = "center";
+    checkbox.style.backgroundRepeat = "no-repeat"; // Prevents repeating of the image
 
     // Create a text line below the checkbox that changes based on checkbox state
     checkboxText = document.createElement("p");
     checkboxText.textContent = "When enabled you keep the app free"; // Default text when checkbox is "on"
     checkboxText.style.textAlign = "center";
-    checkboxText.style.marginTop = "10px";
-    checkboxText.style.fontSize = "14px";
+    checkboxText.style.marginTop = "1.6vh";
+    checkboxText.style.fontSize = "1vw";
     checkboxText.style.color = "#cccccc";
 
     checkbox.onclick = function () {
@@ -235,8 +233,8 @@ function createSettingsDialog({
     var qrCodeLabel = document.createElement("p");
     qrCodeLabel.textContent = "Scan the QR Code to learn more";
     qrCodeLabel.style.textAlign = "center";
-    qrCodeLabel.style.marginTop = "1rem";
-    qrCodeLabel.style.fontSize = "14px";
+    qrCodeLabel.style.marginTop = "1.5vh";
+    qrCodeLabel.style.fontSize = "1.1vw";
     qrCodeLabel.style.color = "#cccccc";
 
     var qrCodeImage = document.createElement("img");
@@ -245,12 +243,12 @@ function createSettingsDialog({
     qrCodeImage.alt = "QR Code";
     qrCodeImage.style.display = "block";
     qrCodeImage.style.margin = "0 auto"; // Center the image
-    qrCodeImage.style.width = "100px"; // Set size for the QR code image
-    qrCodeImage.style.height = "100px";
+    qrCodeImage.style.width = "10vh"; // Set size for the QR code image
+    qrCodeImage.style.height = "10vh";
 
     // Append elements to the message box
     messageBox.appendChild(closeButton);
-    messageBox.appendChild(vendorTitle);
+    messageBox.appendChild(logoImg);
     // messageBox.appendChild(privacyTitle);
     // messageBox.appendChild(privacyLink);
     messageBox.appendChild(webIndexingRow); // Add the Web Indexing row
@@ -291,7 +289,7 @@ function createSettingsDialog({
 }
 
 if (typeof window !== "undefined") {
-    window.SettingsDialog = { create: createSettingsDialog };
+  window.SettingsDialog = { create: createSettingsDialog };
 }
 
 export default { create: createSettingsDialog };
