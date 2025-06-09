@@ -88,7 +88,7 @@ function createSettingsDialog({
     messageBox.style.display = "block";
     isChecked = value;
     renderCheckBox();
-    setCurrent(value ? "closeSettingsButton" : "checkbox");
+    setCurrent("closeSettingsButton");
     overlaySetting.addEventListener("click", function (event) {
       event.stopPropagation(); // Stop the click event from propagating
     });
@@ -184,7 +184,7 @@ function createSettingsDialog({
     logoImg.style.display = "block";
     logoImg.style.margin = "0 auto"; // centers the image
     logoImg.style.width = "auto"; // adjust size as needed
-    logoImg.style.height = "15vh"; // preserve aspect ratio
+    logoImg.style.height = "12vh"; // preserve aspect ratio
     logoImg.style.marginTop = "10vh"; // preserve aspect ratio
 
     // Create the Web Indexing row with a round checkbox
