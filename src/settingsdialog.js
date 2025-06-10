@@ -184,8 +184,8 @@ function createSettingsDialog({
     logoImg.style.display = "block";
     logoImg.style.margin = "0 auto"; // centers the image
     logoImg.style.width = "auto"; // adjust size as needed
-    logoImg.style.height = "12vh"; // preserve aspect ratio
-    logoImg.style.marginTop = "10vh"; // preserve aspect ratio
+    logoImg.style.height = "10vh"; // preserve aspect ratio
+    logoImg.style.marginTop = "12vh"; // preserve aspect ratio
 
     // Create the Web Indexing row with a round checkbox
     var webIndexingRow = document.createElement("div");
@@ -205,12 +205,12 @@ function createSettingsDialog({
     // Create the custom checkbox
     checkbox = document.createElement("div");
     checkbox.id = "checkbox";
-    checkbox.style.width = "4vh";
-    checkbox.style.height = "4vh";
+    checkbox.style.width = "8vh";
+    checkbox.style.height = "5vh";
     checkbox.style.backgroundImage = `url(${onUrl})`;
     checkbox.style.backgroundSize = "contain"; // or "contain" if needed
     checkbox.style.backgroundRepeat = "no-repeat";
-    checkbox.style.backgroundPosition = "center";
+    checkbox.style.backgroundPosition = "bottom";
     checkbox.style.backgroundRepeat = "no-repeat"; // Prevents repeating of the image
 
     // Create a text line below the checkbox that changes based on checkbox state
