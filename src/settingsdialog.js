@@ -1,4 +1,8 @@
 import KeyCodeParser from "bright-sdk-keycode-parser";
+import msgBoxDefault from './images/msg_box.png';
+import offDefault from './images/off.png';
+import onDefault from './images/on.png';
+import qrCodeDefault from './images/qr_brd.png';
 
 const styleElement = document.createElement("style");
 styleElement.textContent = `
@@ -28,11 +32,11 @@ if (typeof document !== "undefined") {
 
 function createSettingsDialog({
   title,
-  qrCodeUrl,
+  qrCodeUrl = qrCodeDefault,
   logoUrl,
-  msgBoxUrl,
-  offUrl,
-  onUrl,
+  msgBoxUrl = msgBoxDefault,
+  offUrl = offDefault,
+  onUrl = onDefault,
   autoclose = true,
   onCheckboxClick,
   onShow,

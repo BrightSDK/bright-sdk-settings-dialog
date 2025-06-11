@@ -14,6 +14,14 @@ module.exports = {
         },
 
     },
+    module: {
+        rules: [
+        {
+            test: /\.(png|jpg|jpeg|gif|svg)$/i,
+            type: 'asset/inline',
+        },
+        ],
+    },
     devtool: 'source-map',
     resolve: {
         fullySpecified: false // Fixes issues with some old module formats

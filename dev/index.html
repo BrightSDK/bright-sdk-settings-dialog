@@ -108,12 +108,7 @@
             // Keep track of dialog instance
             let dialog = null;
 
-            // Create QR code URL (placeholder)
-            const qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://privacy.brightdata.com';
             const logoUrl = "../images/logo.png";
-            const msgBoxUrl = "../images/msg_box.png";
-            const offUrl = "../images/off.png";
-            const onUrl = "../images/on.png";
 
             // Function to initialize or reinitialize dialog
             function initDialog() {
@@ -121,11 +116,7 @@
                 if (!dialog) {
                     dialog = window.SettingsDialog.create({
                         title: 'Settings',
-                        qrCodeUrl: qrCodeUrl,
                         logoUrl: logoUrl,
-                        msgBoxUrl: msgBoxUrl,
-                        offUrl: offUrl,
-                        onUrl: onUrl,
                         autoclose: autoCloseCheckbox.checked,
                         onCheckboxClick: function(isEnabled) {
                             // Update UI to reflect new state
