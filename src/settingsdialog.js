@@ -155,6 +155,8 @@ function createSettingsDialog({
     messageBox.style.padding = "20px";
     messageBox.style.zIndex = "1000";
     messageBox.style.fontFamily = "'Molisa Delawere', sans-serif"; // Set font family for message box
+    messageBox.style.zIndex = "1000"; // On top of the overlaySetting
+
     // Create the close button
     closeButton = document.createElement("button");
     closeButton.id = "closeSettingsButton";
