@@ -56,6 +56,20 @@ function createSettingsDialog({
     autoClose = value;
   }
 
+  var focusableElements = [
+    "closeSettingsButton",
+    "checkbox",
+  ];
+
+  var elementHandlers = {
+    closeSettingsButton: function () {
+      hideSettings();
+    },
+    checkbox: function () {
+      checkbox.onclick();
+    },
+  };
+
   function resetCurrent() {
     stopFlash(currentButton);
     currentButton = null;
@@ -70,16 +84,14 @@ function createSettingsDialog({
   function handleKeyDown(e) {
     if (setting_msg_on) {
       const key = KeyCodeParser.parseEvent(e);
-      if (key.UP) {
-        setCurrent("closeSettingsButton");
-      } else if (key.DOWN) {
-        setCurrent("checkbox");
+      if (key.UP || key.DOWN)
+      {
+        setCurrent(focusableElements[
+          (focusableElements.indexOf(currentButton) + (key.UP ? -1 : 1))
+            % focusableElements.length
+        ]);
       } else if (key.ENTER) {
-        if (currentButton == "closeSettingsButton") {
-          hideSettings();
-        } else if (currentButton == "checkbox") {
-          checkbox.onclick();
-        }
+        elementHandlers[currentButton]();
       } else if (key.BACK) {
         hideSettings();
       }
@@ -92,7 +104,10 @@ function createSettingsDialog({
     messageBox.style.display = "block";
     isChecked = value;
     renderCheckBox();
-    setCurrent("closeSettingsButton");
+    if (value)
+      setCurrent("closeSettingsButton");
+    else
+      setCurrent("checkbox");
     overlaySetting.addEventListener("click", function (event) {
       event.stopPropagation(); // Stop the click event from propagating
     });
