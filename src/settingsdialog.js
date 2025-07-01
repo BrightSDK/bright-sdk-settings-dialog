@@ -39,6 +39,7 @@ function createSettingsDialog({
   onUrl = onDefault,
   onText = 'When enabled you keep the app free',
   offText = 'Enable to keep the app free',
+  qrCodeDescription = 'To learn more about Web Indexing by Bright Data<br> scan the QR code below',
   autoclose = true,
   onCheckboxClick,
   onShow,
@@ -252,11 +253,12 @@ function createSettingsDialog({
 
     // Add the QR Code section below the Web Indexing checkbox
     var qrCodeLabel = document.createElement("p");
-    qrCodeLabel.textContent = "Scan the QR Code to learn more";
+    qrCodeLabel.innerHTML = qrCodeDescription;
     qrCodeLabel.style.textAlign = "center";
     qrCodeLabel.style.marginTop = "1.5vh";
-    qrCodeLabel.style.fontSize = "1.1vw";
+    qrCodeLabel.style.fontSize = "1vw";
     qrCodeLabel.style.color = "#cccccc";
+    qrCodeLabel.style.padding = "0 3vh";
 
     var qrCodeImage = document.createElement("img");
     qrCodeImage.src = qrCodeUrl;
