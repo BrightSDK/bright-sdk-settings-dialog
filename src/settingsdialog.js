@@ -37,6 +37,8 @@ function createSettingsDialog({
   msgBoxUrl = msgBoxDefault,
   offUrl = offDefault,
   onUrl = onDefault,
+  onText = 'When enabled you keep the app free',
+  offText = 'Enable to keep the app free',
   autoclose = true,
   onCheckboxClick,
   onShow,
@@ -134,10 +136,10 @@ function createSettingsDialog({
   function renderCheckBox() {
     if (isChecked) {
       checkbox.style.backgroundImage = `url(${onUrl})`;
-      checkboxText.textContent = "When enabled you keep the app free";
+      checkboxText.textContent = onText;
     } else {
       checkbox.style.backgroundImage = `url(${offUrl})`;
-      checkboxText.textContent = "Enable to keep the app free";
+      checkboxText.textContent = offText;
     }
   }
 
