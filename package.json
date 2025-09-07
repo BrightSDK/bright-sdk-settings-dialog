@@ -16,8 +16,8 @@
     "core-js": "^3.41.0",
     "bright-sdk-keycode-parser": "https://brightsdk.github.io/packages/bright-sdk-keycode-parser/latest.tgz" },
   "scripts": {
-    "build": "npx webpack --mode production",
-    "build-debug": "npx webpack --mode development",
+    "build": "npx webpack --mode production && npx release-manager",
+    "build-debug": "npx webpack --mode development && npx release-manager",
     "dev": "webpack --watch",
     "serve": "node node_modules/nodemon/bin/nodemon.js --watch dist server.js"
   }
