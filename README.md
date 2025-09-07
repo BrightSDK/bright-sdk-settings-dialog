@@ -16,13 +16,13 @@ A modular, keyboard-navigable Settings Dialog for BrightSDK-powered apps. Includ
 
 ## 📦 Installation
 
-Install via NPM (if published), or add as a local dependency:
+Download the dialog latest version from the source repository:
 
 ```bash
-npm install path/to/bright-sdk-settings-dialog
+wget -P dist https://raw.githubusercontent.com/BrightSDK/bright-sdk-settings-dialog/refs/heads/main/releases/latest/settingsdialog.bundle.js
 ```
 
-Or include the built bundle directly in your HTML:
+Include the built bundle directly your HTML:
 
 ```html
 <script src="dist/settingsdialog.bundle.js"></script>
@@ -79,7 +79,7 @@ dialog.hide();
 1. **Clone the repository** (if you haven't already)
 
 ```bash
-git clone git@github.com:vladislavs-luminati/bright-sdk-settings-dialog.git
+git clone git@github.com:BrightSDK/bright-sdk-settings-dialog.git
 cd bright-sdk-settings-dialog
 ```
 
