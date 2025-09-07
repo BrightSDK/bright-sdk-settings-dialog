@@ -1,4 +1,7 @@
+
 # BrightSDK Settings Dialog
+
+![Settings Dialog Screenshot](img/dialog.png)
 
 A modular, keyboard-navigable Settings Dialog for BrightSDK-powered apps. Includes Web Indexing toggle, event callbacks, and QR code display.
 
